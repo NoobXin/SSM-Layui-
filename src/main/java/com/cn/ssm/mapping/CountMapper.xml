@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.ssm.dao.CountDao" >
+  <resultMap id="BaseResultMap" type="com.cn.ssm.domain.Count" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="CARD_ID" property="card_id" jdbcType="VARCHAR" />
+    <result column="DAY" property="day" jdbcType="DATE" />
+  </resultMap>
+
+ <insert id="add" parameterType="com.cn.ssm.domain.Count" >
+
+    insert into JZZ_QZXX_CXJL
+     (ID,CARD_ID,DAY) values ( SEQ_ID.NEXTVAL, #{entity.card_id,jdbcType=VARCHAR}, #{entity.day,jdbcType=DATE})
+  </insert>
+<!--  <update id="updateByPrimaryKeySelective" parameterType="com.cn.ssm.domain.Count" >-->
+<!--    update JZZ_QZXX_CXJL-->
+<!--    <set >-->
+<!--      <if test="username != null" >-->
+<!--        USERNAME = #{username,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="password != null" >-->
+<!--        PASSWORD = #{password,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--    </set>-->
+<!--    where CARD_ID = #{CARD_ID,jdbcType=INTEGER}-->
+<!--  </update>-->
+<!--  <update id="updateByPrimaryKey" parameterType="com.cn.ssm.domain.Count" >-->
+<!--    update JZZ_QZXX_CXJL-->
+<!--    set USERNAME = #{username,jdbcType=VARCHAR},-->
+<!--      PASSWORD = #{password,jdbcType=VARCHAR}-->
+<!--    where CARD_ID = #{CARD_ID,jdbcType=INTEGER}-->
+<!--    </update>-->
+  <select id="selectNumByID" resultMap="BaseResultMap" parameterType="com.cn.ssm.domain.Count" >-->
+      select count(day) as SE_NUM
+      from JZZ_QZXX_CXJL
+      where CARD_ID = #{entity.card_id,jdbcType=INTEGER}
+      <if test="entity.startDay != null and entity.startDay != '' ">
+        and to_date(to_char(JZZ_QZXX_CXJL.DAY ,'yyyy-MM-dd'),'yyyy-MM-dd') &gt;= to_date(#{entity.startDay}, 'yyyy-MM-dd')
+      </if>
+      <if test="entity.endDay != null and entity.endDay != '' ">
+        and to_date(to_char(JZZ_QZXX_CXJL.DAY ,'yyyy-MM-dd'),'yyyy-MM-dd') &lt;= to_date(#{entity.endDay}, 'yyyy-MM-dd')
+      </if>
+    </select>
+</mapper>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.ssm.dao.IDCardDao">
+    <resultMap id="BaseResultMap" type="com.cn.ssm.domain.IDCard">
+        <!--第一部分-->
+        <result column="zklx" property="type" jdbcType="VARCHAR"/>
+        <result column="zkxx_yxkssj" property="startTime" jdbcType="VARCHAR"/>
+        <result column="zkxx_yxjzsj" property="endTime" jdbcType="VARCHAR"/>
+        <!--第二部分-->
+        <result column="dzsffsbh" property="dzsffsbh" jdbcType="VARCHAR"/>
+        <result column="wyjjrq" property="wyjjrq" jdbcType="VARCHAR"/>
+        <result column="jjr_xm" property="jjr_xm" jdbcType="VARCHAR"/>
+        <result column="jjr_lxdh" property="jjr_lxdh" jdbcType="VARCHAR"/>
+        <result column="jjr_dz" property="jjr_dz" jdbcType="VARCHAR"/>
+        <result column="jjtscg" property="jjtscg" jdbcType="VARCHAR"/>
+        <result column="jjsbyy" property="jjsbyy" jdbcType="VARCHAR"/>
+        <result column="jjsj" property="jjsj" jdbcType="VARCHAR"/>
+        <result column="jjdh" property="jjdh" jdbcType="VARCHAR"/>
+        <result column="sjr_xm" property="sjr_xm" jdbcType="VARCHAR"/>
+        <result column="sjr_lxdh" property="sjr_lxdh" jdbcType="VARCHAR"/>
+        <result column="sjr_dz" property="sjr_dz" jdbcType="VARCHAR"/>
+        <result column="psrq" property="psrq" jdbcType="VARCHAR"/>
+        <result column="psdh" property="psdh" jdbcType="VARCHAR"/>
+        <result column="xgsj" property="xgsj" jdbcType="VARCHAR"/>
+        <!--第三部分-->
+        <result column="yjmx_qzrq" property="yjmx_qzrq" jdbcType="VARCHAR"/>
+        <result column="yjmx_sfps" property="yjmx_sfps" jdbcType="VARCHAR"/>
+        <result column="yjmx_pspc" property="yjmx_pspc" jdbcType="VARCHAR"/>
+        <result column="yjmx_qsrq" property="yjmx_qsrq" jdbcType="VARCHAR"/>
+        <result column="yjmx_psdh" property="yjmx_psdh" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="selectByNum" resultMap="BaseResultMap" parameterType="java.lang.String">
+       select decode(z.zkxx_lx,1, 1,2)zklx,z.zkxx_yxkssj,z.zkxx_yxjzsj
+        from bjsjzz_ywgl.jzz_bzryxx    b,
+           bjsjzz_ywgl.jzz_zkxx      z
+        where b.bzryxx_bh = z.zkxx_rybh
+        and b.bzryxx_sfzhm =  #{id,jdbcType=VARCHAR}
+        and b.bzryxx_sfyx='1'
+        and z.zkxx_sfyx='1'
+    </select>
+
+    <select id="selectByTypeOne" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select  q.dzsffsbh,
+                e.wyjjrq,
+                e.jjr_xm,
+                e.jjr_lxdh,
+                e.jjr_dz,
+                e.jjtscg,
+                e.jjsbyy,
+                e.jjsj,
+                e.jjdh,
+                e.sjr_xm,
+                e.sjr_lxdh,
+                e.sjr_dz,
+                e.psrq,
+                e.psdh,
+                e.xgsj
+        from bjsjzz_ywgl.fwxt_jzz_wyqzxxb q,
+             bjsjzz_ywgl.jzz_emsxxb e
+        where q.qzbh=e.qzbh and q.bzryxx_sfzhm = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByTypeTwo" resultMap="BaseResultMap" parameterType="java.lang.String">
+       select  dq.dzsffsbh,
+               de.wyjjrq,
+               de.jjr_xm,
+               de.jjr_lxdh,
+               de.jjr_dz,
+               de.jjtscg,
+               de.jjsbyy,
+               de.jjsj,
+               de.jjdh,
+               de.sjr_xm,
+               de.sjr_lxdh,
+               de.sjr_dz,
+               de.psrq,
+               de.psdh,
+               de.xgsj
+       from bjsjzz_ywgl.fwxt_jzz_wyqzxxb_djk dq,
+            bjsjzz_ywgl.jzz_emsxxb_djk de
+       where dq.qzbh=de.qzbh and dq.bzryxx_sfzhm = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectByPage" parameterType="java.lang.String"  resultMap="BaseResultMap">
+        select decode(z.zkxx_lx,1,1,2)zklx,z.zkxx_yxkssj,z.zkxx_yxjzsj
+        from bjsjzz_ywgl.jzz_bzryxx    b,
+           bjsjzz_ywgl.jzz_zkxx      z
+        where b.bzryxx_bh = z.zkxx_rybh
+        and b.bzryxx_sfzhm =  #{id,jdbcType=VARCHAR}
+        and b.bzryxx_sfyx='1'
+        and z.zkxx_sfyx='1'
+    </select>
+
+    <select id="searchListThree" parameterType="java.lang.String"  resultMap="BaseResultMap">
+      select zk.yjmx_qzrq,zk.yjmx_sfps,zk.yjmx_pspc,zk.yjmx_qsrq,zk.yjmx_psdh
+        from bjsjzz_ywgl.jzz_bzryxx    b,
+         bjsjzz_ywgl.jzz_zkxx      z,
+         bjsjzz_sczxt.sczxt_zkyjmx zk
+        where b.bzryxx_bh = z.zkxx_rybh
+        and z.zkxx_bh = zk.yjmx_zkbh
+        and b.bzryxx_sfzhm = #{id,jdbcType=VARCHAR}
+    </select>
+</mapper>
