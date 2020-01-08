@@ -30,7 +30,7 @@ public class LoginController {
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public Result login(Users user, Model model, HttpSession session) {
+    public Result login(Users user, Model model, HttpSession session ) {
         Result<Object> result = new Result();
         //获取用户名和密码
         String username = user.getUsername();
